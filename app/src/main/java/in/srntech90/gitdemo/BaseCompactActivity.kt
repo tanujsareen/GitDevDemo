@@ -114,4 +114,16 @@ class BaseCompactActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+
+        when (supportFragmentManager.findFragmentById(R.id.frameLayout)) {
+            is DetailFragment -> {
+                super.onBackPressed()
+            }
+            is GitListFragment -> {
+                finish()
+            }
+        }
+    }
+
 }
