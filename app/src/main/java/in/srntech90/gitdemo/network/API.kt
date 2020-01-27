@@ -7,6 +7,8 @@ import retrofit2.http.Query
 
 /**
 Created by Tanuj.Sareen on 23,January,2020
+
+ API Methods
  **/
 interface API {
 

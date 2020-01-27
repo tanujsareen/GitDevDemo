@@ -21,8 +21,10 @@ Created by Tanuj.Sareen on 23,January,2020
 class BaseCompactActivity : AppCompatActivity() {
 
 
+    /*Base Layout (via DataBinding)*/
     private var baseVB: BaseCompactActivityBinding? = null
 
+    /*Anim Constants*/
     private val DURATION: Long = 600
     private val START_DELAY: Long = 100
 
@@ -30,16 +32,19 @@ class BaseCompactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("onCreate")
+        val fragmentFactory = supportFragmentManager.fragmentFactory
         baseVB = DataBindingUtil.setContentView(this, R.layout.base_compact_activity)
         initBase()
     }
 
+    /*Initialize BaseCompact Acivity*/
     private fun initBase() {
         setSupportActionBar(baseVB?.toolbar)
         initHomeFrag()
     }
 
 
+    /*Initialize  GitList Fragment*/
     private fun initHomeFrag() {
         val listFragment = GitListFragment()
         val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -51,6 +56,7 @@ class BaseCompactActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    /*Can change Toolbar accordingly*/
     fun setInitFrag(frag: Fragment) {
 
         when (frag) {
@@ -63,6 +69,7 @@ class BaseCompactActivity : AppCompatActivity() {
         }
     }
 
+    /*Mobile or tablet size check*/
     fun isTablet(): Boolean {
         val isBoolean: Boolean
 
@@ -81,6 +88,7 @@ class BaseCompactActivity : AppCompatActivity() {
         return isBoolean
     }
 
+    /*call Detailed Fragment*/
     fun callDetailFrag(gitItem: GitItem, img: ImageView, txtUserName: TextView) {
 
         val detailFrag = DetailFragment()
@@ -114,6 +122,7 @@ class BaseCompactActivity : AppCompatActivity() {
 
     }
 
+    /*onBackPressed managed*/
     override fun onBackPressed() {
 
         when (supportFragmentManager.findFragmentById(R.id.frameLayout)) {

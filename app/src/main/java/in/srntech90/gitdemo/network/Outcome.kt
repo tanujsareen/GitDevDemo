@@ -2,7 +2,7 @@
 package `in`.srntech90.gitdemo.network
 
 
- 
+ /*Sealed Classes for Type Safety in Outcome: Results */
 sealed class Outcome<T> {
 
     data class Progress<T>(var loading: Boolean) : Outcome<T>()

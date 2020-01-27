@@ -32,7 +32,13 @@ ext {
     coroutines = '1.2.1'
     retrofitVersion = '2.7.1'
     glideVersion= '4.10.0'
+
+    espresso='3.2.0'
+    androidTest="1.2.0"
+
+
     alias='srntech'
     password='android'
+
 
 }

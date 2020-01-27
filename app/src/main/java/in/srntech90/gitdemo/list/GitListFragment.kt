@@ -1,11 +1,11 @@
 package `in`.srntech90.gitdemo.list
 
-import `in`.srntech90.gitdemo.network.Outcome
 import `in`.srntech90.gitdemo.BaseCompactActivity
 import `in`.srntech90.gitdemo.R
 import `in`.srntech90.gitdemo.databinding.ListFragmentBinding
 import `in`.srntech90.gitdemo.list.viewmodel.ListViewModel
 import `in`.srntech90.gitdemo.model.GitItem
+import `in`.srntech90.gitdemo.network.Outcome
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -29,29 +29,35 @@ Created by Tanuj.Sareen on 23,January,2020
 class GitListFragment : Fragment() {
 
 
+    /*Context for current Fragment*/
     private var activity: Activity? = null
 
+    /*layout Binding of Git List Fragment*/
     private var listVB: ListFragmentBinding? = null
 
+    /*Initialize View Model using Kotlin KTX Extension*/
     private val viewModel by activityViewModels<ListViewModel>()
 
-
+    /*Initail Dummy List for Collection of Elements*/
     private var gitItems: ArrayList<GitItem> = ArrayList()
 
+    /*Custom List Adapter*/
     private var movieAdapter: GitListAdapter? = null
 
-
+    /*providing Context after reattaching scenarios*/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Timber.i("onAttach")
         this.activity = context as Activity
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("onCreate")
     }
 
+    /*Set content View using Databinding*/
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,33 +70,40 @@ class GitListFragment : Fragment() {
         return listVB?.root
     }
 
+    /*initialze GitListFrag */
     private fun initListFrag() {
+
+        /*set configuration Changes*/
         onConfigurationChanged(resources.configuration)
         (listVB?.recycleViewer?.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             true
         listVB?.recycleViewer?.setHasFixedSize(true)
 
 
+        /*check context for current Fragment*/
         activity?.let {
 
             if (movieAdapter == null) {
 
                 movieAdapter = GitListAdapter(it, gitItems, object : ICallBackSelector {
-                    override fun callDetailView(gitItem: GitItem, img: ImageView, txtUserName: TextView) {
+                    override fun callDetailView(
+                        gitItem: GitItem,
+                        img: ImageView,
+                        txtUserName: TextView
+                    ) {
                         (activity as BaseCompactActivity).callDetailFrag(gitItem, img, txtUserName)
                     }
                 })
 
                 listVB?.recycleViewer?.adapter = movieAdapter
 
-                /*(activity as BaseCompactActivity).search_badge.setQuery(
-                    resources.getString(R.string.app_name),
-                    true
-                )*/
+                /*API Call*/
                 callMovies(
                     "Java",
                     "weekly"
                 )
+
+                /*call Observer*/
                 observeData()
             } else {
                 setValues(Outcome.loading(false))
@@ -100,9 +113,10 @@ class GitListFragment : Fragment() {
 
     }
 
+    /*Connect Observer / Data Emit to UI*/
     private fun observeData() {
         activity?.let {
-            viewModel.observerMovieList()
+            viewModel.observerGitItemList()
                 ?.observe(this, Observer {
                     setValues(it)
                 })
@@ -110,10 +124,12 @@ class GitListFragment : Fragment() {
     }
 
 
+    /*Call Git Developer API from List View Model*/
     private fun callMovies(language: String, since: String) {
         viewModel.listRepos(language, since)
     }
 
+    /*Notify Changes for data emit according to number of columns in the grid List Card */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         when (newConfig.orientation) {
@@ -123,7 +139,7 @@ class GitListFragment : Fragment() {
                 if ((activity as BaseCompactActivity).isTablet()) {
 
                     val layoutManager = GridLayoutManager(activity, 5)
-                   listVB?.recycleViewer?.layoutManager = layoutManager
+                    listVB?.recycleViewer?.layoutManager = layoutManager
 
 
                 } else {
@@ -149,6 +165,7 @@ class GitListFragment : Fragment() {
     }
 
 
+    /*set Data from Observer*/
     private fun setValues(outCome: Outcome<ArrayList<GitItem>>?) {
 
         when (outCome) {
@@ -171,6 +188,7 @@ class GitListFragment : Fragment() {
         }
     }
 
+    /*Update API Failur / can even start the scenario again*/
     private fun showFailure(error: String) {
 
     }

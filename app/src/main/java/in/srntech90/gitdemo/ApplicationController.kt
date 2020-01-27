@@ -14,9 +14,9 @@ class ApplicationController : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG)
-            Timber.plant(Timber.DebugTree())
+            Timber.plant(Timber.DebugTree()) // FOR planting Timber Logger for Debug Mode
         else
-            Timber.plant()
+            Timber.plant()  //for Planting Timber Log for Live Environment
     }
 
 

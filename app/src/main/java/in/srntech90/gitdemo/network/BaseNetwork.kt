@@ -9,6 +9,9 @@ import java.util.concurrent.TimeUnit
 
 /**
 Created by Tanuj.Sareen on 20,January,2020
+
+ Singleton Class for Network Call
+
  **/
 object BaseNetwork {
 
